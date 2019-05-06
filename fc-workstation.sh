@@ -1,4 +1,4 @@
-#!/bin/bash
+# !/bin/bash
 
 # Adiciona a chave GPG da UnitedRPMs para o Fedora
 rpm --import https://raw.githubusercontent.com/UnitedRPMs/unitedrpms/master/URPMS-GPG-PUBLICKEY-Fedora-24
