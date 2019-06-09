@@ -1,5 +1,5 @@
-# fedora
-A set of Fedora (and other RPM-based Linux distros) scripts and utilities
+# Linux utilities and scripts
+A set of scripts and utilities for RPM-based Linux distros
 
 ## What we have here?
 - UnitedRPMs GPG keys for Fedora & repo
