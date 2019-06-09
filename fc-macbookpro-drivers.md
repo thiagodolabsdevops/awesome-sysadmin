@@ -11,7 +11,7 @@ Install the [rpmfusion](http://rpmfusion.org/) repo, note only "nonfree" is requ
 
     su -c 'dnf install -y http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm'
 
-Then install the `akmods` and `kernel-devel` packages (special thanks to [@celsom3](https://gist.github.com/celsom3) for providing this):
+Then install the `akmods` and `kernel-devel` packages:
 
     sudo dnf install -y akmods "kernel-devel-uname-r == $(uname -r)"
 
