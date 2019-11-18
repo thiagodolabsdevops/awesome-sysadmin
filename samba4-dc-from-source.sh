@@ -1,6 +1,4 @@
-```
-#!/bin/bash
- -xe
+#!/bin/bash -xe
 
 SAMBAVER=4.10.9
 SAMBALIBSVER=4.8.3*
@@ -52,5 +50,3 @@ yum install -y samba-libs-$SAMBALIBSVER*
 # Clean temporary files
 #rm -rf /opt/domain-controller/samba-$SAMBAVER/
 #rm -rf /opt/domain-controller/samba-$SAMBAVER.tar.gz
-
-```
