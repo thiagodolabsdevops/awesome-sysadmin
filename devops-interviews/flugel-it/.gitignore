@@ -1,0 +1,21 @@
+# terraform cache
+.terraform
+*.tfvars
+*.tfstate
+*.tfstate.backup
+*.lock.info
+
+# compressed files
+*.tar.gz
+*.tgz
+*.zip
+
+# python cache
+*.pyc
+.pytest_cache
+__pycache__
+
+# log and tmp files
+*.log
+*.tmp
+sync
