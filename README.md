@@ -1,6 +1,6 @@
 # Linux utilities and scripts
 
-A set of Linux scripts and utilities
+A set of Linux scripts and utilities for DevOps and SysAdmins
 
 ## What we got
 
