@@ -4,14 +4,14 @@
 
 A infraestrutura deve ser provisionada na AWS utilizando Terraform. O código deverá contemplar os seguintes recursos:
 
-- 2 x instâncias EC2 (um frontend e um backend)
+- 2 x instâncias EC2 (uma para frontend e uma para backend)
 - 2 x Security Group’s:
   - Um dos security group deve conter uma liberação para HTTP e HTTPS e ser atachado no frontend
   - O outro security group deve ter apenas uma liberação SSH vindo do frontend e ser atachado no backend
 
 ## Docker
 
-Visando a evolução da aplicação para microserviço, monte um Dockerfile funcional de uma aplicação web usando Nginx como demonstração e importando um index.html contendo o HTML abaixo:
+Visando a evolução da aplicação para micro serviço, monte um Dockerfile funcional de uma aplicação web usando Nginx como demonstração e importando um index.html contendo o HTML abaixo:
 
 ```<h1>TESTE DEVOPS</h1>```
 

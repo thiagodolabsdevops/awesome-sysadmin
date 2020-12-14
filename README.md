@@ -1,11 +1,11 @@
-# Linux utilities and scripts
+# Linux Tips & Tricks
 
-A set of Linux scripts and utilities for DevOps and SysAdmins
+Um monte de scripts bash e utilitários para DevOps e SysAdmins :-)
 
-## What we got
+## O que vamos ter aqui
 
-- DevOps interviews tips & tricks
-- Scripts to install:
+- Assignments de DevOps
+- Scripts para simplificar a instalação de:
   - Docker
   - MiniKube, kubectl
   - Helm
@@ -13,8 +13,3 @@ A set of Linux scripts and utilities for DevOps and SysAdmins
   - Packer
   - Terraform & Terragrunt
   - Skaffold
-
-## Notes
-
-- Maybe there's a minimal interaction (some Yes/No answers, sudo elevation needs, etc)
-- Remember to reboot when you are done ;-)
