@@ -20,5 +20,9 @@ if [ $PRETTY_NAME =~ "Fedora" ]; then
     sudo dnf install -y runc podman
 fi
 
+curl -o ~/.local/bin/podman-compose https://raw.githubusercontent.com/containers/podman-compose/devel/podman_compose.py
+sudo install podman-compose /usr/local/bin/
+
 echo 'alias docker="podman"' >> ~/.bashrc
+echo 'alias docker-compose="podman-compose"' >> ~/.bashrc
 source ~/.bashrc
