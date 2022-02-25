@@ -8,32 +8,32 @@ Este documento aborda a configuração do servidor OpenLDAP e a autenticação d
 
 ## O que um servidor LDAP faz
 
-- Mantém informações de usuários e objetos de rede em um banco de dados central disponível para consulta
-- Armazena informações como: texto sem formatação, imagens, dados binários e certificados de chave pública
-- Fornece serviços de autenticação e autorização, como gerenciamento de login e senhas para usuários de rede
-- Também pode armazenar registros DNS em seu banco de dados
-- Pode ser usado como catálogo de endereços e pessoas para empresas de qualquer tamanho
+* Mantém informações de usuários e objetos de rede em um banco de dados central disponível para consulta
+* Armazena informações como: texto sem formatação, imagens, dados binários e certificados de chave pública
+* Fornece serviços de autenticação e autorização, como gerenciamento de login e senhas para usuários de rede
+* Também pode armazenar registros DNS em seu banco de dados
+* Pode ser usado como catálogo de endereços e pessoas para empresas de qualquer tamanho
 
 ## Terminologia
 
 A terminologia utilizada em um serviço de diretório faz parte da especificação X.500, que define atributos em um diretório LDAP. Abaixo seguem alguns dos atributos mais comuns:
 
-Atributo X.500   |   Terminologia
------------------|-------------------------
-CN               |   commonName
-L                |   localityName
-ST               |   stateOrProvinceName
-O                |   organizationName
-OU               |   organizationalUnitName
-C                |   countryName
-STREET           |   streetAddress
-DC               |   domainComponent
-UID              |   userid
-DN               |   Distinguished name
+| Atributo X.500 | Terminologia           |
+| -------------- | ---------------------- |
+| CN             | commonName             |
+| L              | localityName           |
+| ST             | stateOrProvinceName    |
+| O              | organizationName       |
+| OU             | organizationalUnitName |
+| C              | countryName            |
+| STREET         | streetAddress          |
+| DC             | domainComponent        |
+| UID            | userid                 |
+| DN             | Distinguished name     |
 
 O último atributo (DN) é composto por uma série de outros atributos separados por vírgula, usados para identificar entradas exclusivas na hierarquia de diretórios. O DN é o nome completo da entrada.
 
-A string ```CN=administrators,OU=Grupos,DC=meudominio,DC=com``` representa um caminho único dentro da estrutura hierárquica do diretório chamada de Directory Information Tree (DIT), e deve ser lida da direita (raiz) para esquerda (folha).
+A string `CN=administrators,OU=Grupos,DC=meudominio,DC=com` representa um caminho único dentro da estrutura hierárquica do diretório chamada de Directory Information Tree (DIT), e deve ser lida da direita (raiz) para esquerda (folha).
 
 ## Definições da instalação
 
@@ -41,10 +41,10 @@ O servidor OpenLDAP será instalado numa máquina virtual rodando o Ubuntu Serve
 
 Dependendo de quais grupos LDAP um usuário fizer parte, o mesmo será mapeado automaticamente ao grupo correspondente dentro do Windows 7.
 
-Função            | Endereço IP | Hostname              | Sistema Operacional
-------------------|-------------|-----------------------|---------------------
-Servidor OpenLDAP | 10.10.10.10 | ldap.meudominio.com   | Ubuntu Server 16.04
-Estação cliente   | 10.10.10.20 | win7.meudominio.com   | Windows 7 SP1
+| Função            | Endereço IP | Hostname            | Sistema Operacional |
+| ----------------- | ----------- | ------------------- | ------------------- |
+| Servidor OpenLDAP | 10.10.10.10 | ldap.meudominio.com | Ubuntu Server 16.04 |
+| Estação cliente   | 10.10.10.20 | win7.meudominio.com | Windows 7 SP1       |
 
 O domínio LDAP que será utilizado será o **meudominio.com**, assim como o sufixo DNS do servidor e estação cliente.
 
@@ -67,7 +67,7 @@ O Ubuntu 16.04 vem com o firewall UFW habilitado por padrão. Para fins de facil
 
 ## Instalação do servidor OpenLDAP Server
 
-Atualize o sistema e instale o OpenLDAP e seus utilitários usando o ```apt```. Em seguida, habilite o serviço através do ```systemctl```para ser carregado durante a inicialização do sistema:
+Atualize o sistema e instale o OpenLDAP e seus utilitários usando o `apt`. Em seguida, habilite o serviço através do `systemctl`para ser carregado durante a inicialização do sistema:
 
 ```bash
 # apt update && apt -y upgrade
@@ -75,43 +75,35 @@ Atualize o sistema e instale o OpenLDAP e seus utilitários usando o ```apt```. 
 # systemctl enable slapd
 ```
 
-Com o OpenLDAP instalado, vamos alterar os padrões fornecidos com o Ubuntu para se adequar à nossa necessidade. Execute o comando ```dpkg-reconfigure slapd``` para abrir a ferramenta de configuração do OpenLDAP.
+Com o OpenLDAP instalado, vamos alterar os padrões fornecidos com o Ubuntu para se adequar à nossa necessidade. Execute o comando `dpkg-reconfigure slapd` para abrir a ferramenta de configuração do OpenLDAP.
 
 A ferramenta de configuração fará uma série de perguntas para reconfigurar o OpenLDAP:
 
-1. ![Slapd1](img/slapd/slapd1.png)
+1.  ![Slapd1](../../tips\_and\_tricks/openldap/img/slapd/slapd1.png)
 
     Como o OpenLDAP já foi instalado com o esquema base, omita a configuração selecionando **No**.
-
-2. ![Slapd2](img/slapd/slapd2.png)
+2.  ![Slapd2](../../tips\_and\_tricks/openldap/img/slapd/slapd2.png)
 
     Confirme o nome DNS do seu domínio. Esta estrutura será utilizada para criar a árvore de diretório do seu servidor OpenLDAP.
-
-3. ![Slapd3](img/slapd/slapd3.png)
+3.  ![Slapd3](../../tips\_and\_tricks/openldap/img/slapd/slapd3.png)
 
     O nome da organização é comumente o mesmo nome DNS do seu domínio. Basta confirmar e seguir com a reconfiguração.
-
-4. ![Slapd4](img/slapd/slapd4.png)
+4.  ![Slapd4](../../tips\_and\_tricks/openldap/img/slapd/slapd4.png)
 
     Insira a senha do usuário admin do seu diretório OpenLDAP.
-
-5. ![Slapd5](img/slapd/slapd5.png)
+5.  ![Slapd5](../../tips\_and\_tricks/openldap/img/slapd/slapd5.png)
 
     Na sequência, será solicitada a confirmação da senha digitada na etapa anterior, basta repeti-la e seguir com a reconfiguração.
-
-6. ![Slapd6](img/slapd/slapd6.png)
+6.  ![Slapd6](../../tips\_and\_tricks/openldap/img/slapd/slapd6.png)
 
     Selecione o formato do banco de dados para armazenamento da árvore de diretório do seu servidor OpenLDAP. Aqui selecionamos o formato MDB, por ser mais atual e requerer menos configurações.
-
-7. ![Slapd7](img/slapd/slapd7.png)
+7.  ![Slapd7](../../tips\_and\_tricks/openldap/img/slapd/slapd7.png)
 
     Selecione se deseja manter ou excluir a base de dados no caso de remoção do OpenLDAP do servidor. Nós decidimos por manter a base de dados selecionando **No**.
+8.  ![Slapd8](../../tips\_and\_tricks/openldap/img/slapd/slapd8.png)
 
-8. ![Slapd8](img/slapd/slapd8.png)
-
-    Caso hajam arquivos no diretório ```/var/lib/ldap```, os mesmos podem ser removidos durante a reconfiguração selecionando **Yes**.
-
-9. ![Slapd9](img/slapd/slapd9.png)
+    Caso hajam arquivos no diretório `/var/lib/ldap`, os mesmos podem ser removidos durante a reconfiguração selecionando **Yes**.
+9.  ![Slapd9](../../tips\_and\_tricks/openldap/img/slapd/slapd9.png)
 
     O protocolo LDAPv2 é antigo e vem desabilitado por padrão em novas instalações do OpenLDAP. Como estamos implantando um ambiente do zero, decidimos não implantar esta versão em nossa configuração selecionando **No**.
 
@@ -123,7 +115,7 @@ Após concluir a reconfiguração do slapd, reinicie o serviço do OpenLDAP:
 
 Neste ponto, concluímos a instalação e configuração básica do servidor OpenLDAP, de forma que ele representasse a estrutura de diretório para o domínio **meudominio.com**.
 
-Para encontrar a entrada para o usuário **admin** no diretório OpenLDAP, usaremos o comando ```ldapsearch```. O ```ldapsearch``` solicitará a senha de administrador que fornecemos durante a reconfiguração do OpenLDAP:
+Para encontrar a entrada para o usuário **admin** no diretório OpenLDAP, usaremos o comando `ldapsearch`. O `ldapsearch` solicitará a senha de administrador que fornecemos durante a reconfiguração do OpenLDAP:
 
 ```bash
 # ldapsearch -x -W -D cn=admin,dc=meudominio,dc=com -b dc=meudominio,dc=com -LLL
@@ -173,7 +165,7 @@ objectClass: top
 ou: Teste
 ```
 
-Usaremos o comando ```ldapadd``` para adicionar a unidade organizacional acima:
+Usaremos o comando `ldapadd` para adicionar a unidade organizacional acima:
 
 ```bash
 # ldapadd -W -D "cn=admin,dc=meudominio,dc=com" -f ou_Grupos_Usuarios.ldif
@@ -181,7 +173,7 @@ Usaremos o comando ```ldapadd``` para adicionar a unidade organizacional acima:
 
 ### Excluindo uma unidade organizacional (OU)
 
-Para excluir uma unidade organizacional, use o comando ```ldapdelete``` especificando o DN da OU. Abaixo vamos excluir a OU recém-criada **Teste**:
+Para excluir uma unidade organizacional, use o comando `ldapdelete` especificando o DN da OU. Abaixo vamos excluir a OU recém-criada **Teste**:
 
 ```bash
 # ldapdelete -W -D "cn=admin,dc=meudominio,dc=com" "ou=Teste,dc=meudominio,dc=com"
@@ -217,7 +209,7 @@ cn: users
 gidNumber: 503
 ```
 
-Use o comando ```ldapadd``` como antes para adicionar o grupo ao diretório:
+Use o comando `ldapadd` como antes para adicionar o grupo ao diretório:
 
 ```bash
 # ldapadd -x -W -D "cn=admin,dc=meudominio,dc=com" -f group_users_administrators.ldif
@@ -229,7 +221,7 @@ adding new entry "cn=users,ou=Grupos,dc=meudominio,dc=com"
 
 ### Deletando grupos
 
-Para excluir um grupo, use ```ldapdelete``` especificando o DN do grupo.
+Para excluir um grupo, use `ldapdelete` especificando o DN do grupo.
 
 ```bash
 # ldapdelete -W -D "cn=admin,dc=meudominio,dc=com" "cn=teste,ou=groups,dc=meudominio,dc=com"
@@ -242,14 +234,14 @@ Assim como grupos, usuários são estruturas organizacionais dentro de um diret�
 
 ### Adicionando usuários
 
-Antes de criar os usuários, crie o hash SSHA das senhas que serão atribuídaos aos usuários utilizando o comando ```slappasswd```:
+Antes de criar os usuários, crie o hash SSHA das senhas que serão atribuídaos aos usuários utilizando o comando `slappasswd`:
 
 ```bash
 # slappasswd -h {SSHA} -s P@ssw0rd
 {SSHA}rGbIaTDAwVjkiRpSrWarV2VzU0uPPY0J
 ```
 
-Next create a ldif file for a user
+Em seguida crie um arquivo ldif para os usuários:
 
 ```bash
 # vim create_users.ldif
@@ -268,7 +260,7 @@ loginShell: /bin/sh
 homeDirectory: /home/teste
 ```
 
-Certifique-se de fornecer o **Group ID Number** correto (gidNumber). Adicione o usuário acima usando o comando ```ldapadd```:
+Certifique-se de fornecer o **Group ID Number** correto (gidNumber). Adicione o usuário acima usando o comando `ldapadd`:
 
 ```bash
 # ldapadd -x -W -D "cn=admin,dc=meudominio,dc=com" -f create_users.ldif
@@ -278,7 +270,7 @@ adding new entry "uid=teste,ou=Usuarios,dc=meudominio,dc=com"
 
 ### Deletando usuários
 
-Para excluir um usuário, use o comando ```ldapdelete```:
+Para excluir um usuário, use o comando `ldapdelete`:
 
 ```bash
 # ldapdelete -W -D "cn=admin,dc=meudominio,dc=com" "uid=teste,ou=groups,dc=meudominio,dc=com"
@@ -337,13 +329,13 @@ memberUid: tmagalhaes
 
 ## Usando o phpLDAPadmin
 
-Ao longo desta instalação, criamos, deletamos e pesquisamos OU's, grupos e usuários através da linha de comando. Porém é possível fazer o mesmo através de uma interface web, utilizando a aplicação phpLDAPadmin, que pode ser facilmente instalado utilizando o ```apt```:
+Ao longo desta instalação, criamos, deletamos e pesquisamos OU's, grupos e usuários através da linha de comando. Porém é possível fazer o mesmo através de uma interface web, utilizando a aplicação phpLDAPadmin, que pode ser facilmente instalado utilizando o `apt`:
 
 ```bash
 # apt -y install phpldapadmin
 ```
 
-O ```apt``` já instala todas as dependências da aplicação, como o servidor servidor web Apache e o suporte à linguagem PHP.
+O `apt` já instala todas as dependências da aplicação, como o servidor servidor web Apache e o suporte à linguagem PHP.
 
 Para que seja possível configurar seu diretório LDAP, edite o arquivo de configuração do phpldapadmin para refletir a estrutura de diretórios que criamos anteriormente.
 
@@ -356,13 +348,13 @@ $servers->setValue('login','auth_type','session');
 $servers->setValue('login','bind_id','cn=admin,dc=meudominio,dc=com');
 ```
 
-Após realizar esta configuração, basta acessar o phpLDAPadmin através da URL [http://ldap.meudominio.com/phpldapadmin] através de qualquer navegador web dentro da mesma rede.
+Após realizar esta configuração, basta acessar o phpLDAPadmin através da URL \[http://ldap.meudominio.com/phpldapadmin] através de qualquer navegador web dentro da mesma rede.
 
-![phpLDAPadmin1](img/phpLDAPadmin/phpldapadmin1.png)
+![phpLDAPadmin1](../../tips\_and\_tricks/openldap/img/phpLDAPadmin/phpldapadmin1.png)
 
-Faça login com o usuário ```cn=admin,dc=meudominio,dc=com``` e a senha definida durante a configuração do OpenLDAP.
+Faça login com o usuário `cn=admin,dc=meudominio,dc=com` e a senha definida durante a configuração do OpenLDAP.
 
-![phpLDAPadmin2](img/phpLDAPadmin/phpldapadmin2.png)
+![phpLDAPadmin2](../../tips\_and\_tricks/openldap/img/phpLDAPadmin/phpldapadmin2.png)
 
 ## Autenticação de estações clientes Windows
 
@@ -382,17 +374,17 @@ O pGina requer a instalação do Visual C++ e do .NET Framework 4.0 para funcion
 
 ### Configurar a autenticação local
 
-Após a instalação, inicie o aplicativo de configuração do pGina localizado em ```C:\Program Files\pGina\pGina.Configuration.exe```. Verifique se o **serviço pGina** está em execução e se **Credential Provider/GINA** está instalado e ativado. Esses componentes devem estar habilitados e em execução para que a autenticação funcione corretamente:
+Após a instalação, inicie o aplicativo de configuração do pGina localizado em `C:\Program Files\pGina\pGina.Configuration.exe`. Verifique se o **serviço pGina** está em execução e se **Credential Provider/GINA** está instalado e ativado. Esses componentes devem estar habilitados e em execução para que a autenticação funcione corretamente:
 
-![pGina1](img/pgina/pgina1.png)
+![pGina1](../../tips\_and\_tricks/openldap/img/pgina/pgina1.png)
 
 Em seguida, na aba Plugin Selection, marque as caixas de seleção da imagem para configurar a autenticação local:
 
-![pGina2](img/pgina/pgina2.png)
+![pGina2](../../tips\_and\_tricks/openldap/img/pgina/pgina2.png)
 
 Assegure que as opções sinalizadas estejam marcadas para o correto funcionamento da autenticação local através do pGina.
 
-![pGina3](img/pgina/pgina3.png)
+![pGina3](../../tips\_and\_tricks/openldap/img/pgina/pgina3.png)
 
 ### Configurar a autenticação LDAP
 
@@ -400,47 +392,47 @@ Concluída a configuração da autenticação local, devemos configurar a autent
 
 Não deixe de marcar a caixa da coluna **Change Password**, assim será possível o próprio usuário trocar a senha sem necessidade de intervenção de um administrador no servidor OpenLDAP.
 
-![pGina4](img/pgina/pgina4.png)
+![pGina4](../../tips\_and\_tricks/openldap/img/pgina/pgina4.png)
 
 Na guia **General**, configure todas as opções sinalizadas. Na nossa configuração, os dados foram preenchidos da seguinte maneira:
 
-- LDAP Hosts: ```ldap.meudominio.com```
-- LDAP Port: ```389```
-- Search DN: ```cn=admin,dc=meudominio,dc=com```
-- Search Password: ```senha do administrador do OpenLDAP```
-- Group DN Pattern: ```cn=%g,ou=Grupos,dc=meudominio,dc=com```
+* LDAP Hosts: `ldap.meudominio.com`
+* LDAP Port: `389`
+* Search DN: `cn=admin,dc=meudominio,dc=com`
+* Search Password: `senha do administrador do OpenLDAP`
+* Group DN Pattern: `cn=%g,ou=Grupos,dc=meudominio,dc=com`
 
-![pGina5](img/pgina/pgina5.png)
+![pGina5](../../tips\_and\_tricks/openldap/img/pgina/pgina5.png)
 
 Na guia **Authentication**, desmarque a caixa Allow Empty Passwords e marque a caixa Search for DN.
 
 Configure o Search Filter e Search Context(s) como segue:
 
-- Search Filter: ```cn=%u```
-- Search Context(s): ```ou=Usuarios,dc=meudominio,dc=com```
+* Search Filter: `cn=%u`
+* Search Context(s): `ou=Usuarios,dc=meudominio,dc=com`
 
-![pGina6](img/pgina/pgina6.png)
+![pGina6](../../tips\_and\_tricks/openldap/img/pgina/pgina6.png)
 
 Na guia **Authorization**, habilite as seguintes opções conforme segue:
 
-- [X] Allow
-- [ ] Deny
-- [X] Deny when LDAP authentication fails
-- [ ] Allow when server is unreachable
+* [x] Allow
+* [ ] Deny
+* [x] Deny when LDAP authentication fails
+* [ ] Allow when server is unreachable
 
-![pGina7](img/pgina/pgina7.png)
+![pGina7](../../tips\_and\_tricks/openldap/img/pgina/pgina7.png)
 
 Na guia Gateway, vamos criar duas regras de binding, dessa forma sincronizaremos os usuários que pertençam a um grupo LDAP a um grupo local equivalente no Windows.
 
 Para montarmos este documento, foram criados dois grupos no servidor OpenLDAP com o mesmo nome dos grupos locais do Windows, **administrators** e **users**.
 
-![pGina8](img/pgina/pgina8.png)
+![pGina8](../../tips\_and\_tricks/openldap/img/pgina/pgina8.png)
 
 Para encerrarmos a configuração do plugin LDAP, na guia **Change Password**, assegure que a coluna **Hash Method** esteja selecionando **SHA1**.
 
 Clique em **Save and Close** para seguirmos com a configuração do pGina.
 
-![pGina9](img/pgina/pgina9.png)
+![pGina9](../../tips\_and\_tricks/openldap/img/pgina/pgina9.png)
 
 ### Ordem dos plugins de autenticação
 
@@ -448,7 +440,7 @@ Como o objetivo é autenticar sistemas em rede, devemos priorizar o plugin LDAP 
 
 Clique nas setas ao lado de cada plugin para colocar o plugin LDAP como primeiro em todas as caixas.
 
-![pGina10](img/pgina/pgina10.png)
+![pGina10](../../tips\_and\_tricks/openldap/img/pgina/pgina10.png)
 
 ### Verificando a configuração
 
@@ -458,13 +450,13 @@ Caso a conexão ocorra com sucesso, você deve obter as 3 verificações verdes 
 
 Clique em **Save and Close** para encerrar a configuração do pGina.
 
-![pGina11](img/pgina/pgina11.png)
+![pGina11](../../tips\_and\_tricks/openldap/img/pgina/pgina11.png)
 
 Agora basta selecionar a usar a autenticação **OpenLDAP Login** na tela inicial do Windows e fazer login nas máquinas Windows com seu usuário criado no servidor OpenLDAP.
 
-![pGina13](img/pgina/pgina13.png)
+![pGina13](../../tips\_and\_tricks/openldap/img/pgina/pgina13.png)
 
-![pGina14](img/pgina/pgina14.png)
+![pGina14](../../tips\_and\_tricks/openldap/img/pgina/pgina14.png)
 
 ## Conclusão
 
@@ -476,7 +468,7 @@ Além disso, o OpenLDAP também suporta TLS (Transport Layer Security), para que
 
 ## Referências
 
-- [Guia para servidores Ubuntu - Autenticação de rede](https://help.ubuntu.com/16.04/serverguide/openldap-server.html)
-- [Winlogon and GINA](http://msdn.microsoft.com/en-us/library/aa380543.aspx)
-- [pGina](http://pgina.org/)
-- [pGina fork](http://mutonufoai.github.io/pgina/)
+* [Guia para servidores Ubuntu - Autenticação de rede](https://help.ubuntu.com/16.04/serverguide/openldap-server.html)
+* [Winlogon and GINA](http://msdn.microsoft.com/en-us/library/aa380543.aspx)
+* [pGina](http://pgina.org)
+* [pGina fork](http://mutonufoai.github.io/pgina/)

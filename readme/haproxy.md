@@ -1,12 +1,12 @@
 # HAProxy
 
-![Proxy mode](haproxy-pmode.png)
-
 ## Balanceamento de carga
 
 O balanceamento de carga consiste na agregação de vários componentes para obter uma capacidade de processamento total acima da capacidade individual de cada componente, sem qualquer intervenção do usuário final e de forma escalonável.
 
 Em ambientes da Web, esses componentes são chamados de "balanceador de carga de rede", pois essa atividade é, de longe, o caso de uso mais comum.
+
+![Proxy mode](../tips\_and\_tricks/haproxy/haproxy-pmode.png)
 
 ## Configuração básica do HAProxy
 
