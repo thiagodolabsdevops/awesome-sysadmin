@@ -17,15 +17,37 @@ download_file() {
     fi
 }
 
-# Install Minikube
-install_minikube() {
-    local minikube_binary="minikube"
-    download_file "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64" "$minikube_binary"
+# Install Docker
+install_docker() {
+    local docker_script="get-docker.sh"
+    download_file "https://get.docker.com" "$docker_script"
     
-    echo "Installing Minikube..."
-    sudo install "$minikube_binary" /usr/local/bin/
+    echo "Running Docker installation script..."
+    sudo sh "$docker_script"
     
-    echo "Minikube installation completed."
+    echo "Adding $USER to the docker group..."
+    sudo usermod -aG docker "$USER"
+    
+    echo "Docker installation completed."
+}
+
+# Enable Docker's Kubernetes
+enable_docker_kubernetes() {
+    echo "Enabling Docker's built-in Kubernetes..."
+    
+    # Create Docker's daemon.json if it doesn't exist
+    if [ ! -f /etc/docker/daemon.json ]; then
+        echo "{}" | sudo tee /etc/docker/daemon.json > /dev/null
+    fi
+    
+    # Enable Kubernetes in Docker
+    sudo jq '. + {"kubernetes": {"enabled": true}}' /etc/docker/daemon.json | sudo tee /etc/docker/daemon.json > /dev/null
+    
+    # Restart Docker to apply changes
+    echo "Restarting Docker to apply Kubernetes changes..."
+    sudo systemctl restart docker
+    
+    echo "Docker's Kubernetes is now enabled."
 }
 
 # Install kubectl
@@ -39,14 +61,6 @@ install_kubectl() {
     sudo install "$kubectl_binary" /usr/local/bin/
     
     echo "kubectl installation completed."
-    
-    # Set up aliases for kubectl
-    echo "Creating aliases for kubectl..."
-    echo 'alias k="kubectl"' >> ~/.bashrc
-    echo 'alias kctx="kubectl config use-context"' >> ~/.bashrc
-    echo 'alias kns="kubectl config set-context --current --namespace"' >> ~/.bashrc
-    source ~/.bashrc
-    echo "kubectl aliases added."
 }
 
 # Install Helm
@@ -61,10 +75,9 @@ install_helm() {
 }
 
 # Run installation functions
-install_minikube
+install_docker
+enable_docker_kubernetes
 install_kubectl
 install_helm
 
 echo "All installations and configurations are complete!"
-echo "You can start Minikube using: minikube start"
-echo "You can open the Minikube dashboard using: minikube dashboard"

@@ -1,15 +1,8 @@
-# Linux Tips & Tricks
+# Awesome SysAdmin
 
-Um monte de scripts bash e utilitários para DevOps e SysAdmins :-)
+SysAdmin bash scripts!
 
-## O que vamos ter aqui
+## What to expect?
 
-- Assignments de DevOps
-- Scripts para simplificar a instalação de:
-  - Docker
-  - MiniKube, kubectl
-  - Helm
-  - Nvidia drivers
-  - Packer
-  - Terraform & Terragrunt
-  - Skaffold
+- DevOps Challenges
+- Install scripts for many different DevOps tools and stacks
