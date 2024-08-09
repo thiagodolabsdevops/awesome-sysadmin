@@ -22,6 +22,9 @@ fi
 
 echo "Homebrew and Oh My Posh setup completed successfully!"
 
+# Add Meslo Nerd Font
+oh-my-posh font install meslo
+
 # Tap the virt-manager repository
 brew tap jeffreywildman/homebrew-virt-manager
 
