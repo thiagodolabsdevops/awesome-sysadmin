@@ -34,6 +34,7 @@ cask_apps=(
     visual-studio-code
     obs
     logitech-options
+    zoom
 )
 
 echo "Installing cask applications..."
