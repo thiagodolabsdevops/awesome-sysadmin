@@ -61,6 +61,7 @@ cli_tools=(
     virt-manager
     virt-viewer
     oh-my-posh
+    k9s
 )
 
 echo "Installing command-line tools..."
