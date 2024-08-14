@@ -37,6 +37,7 @@ cask_apps=(
     visual-studio-code
     obs
     logitech-options
+    whisky
     zoom
 )
 
