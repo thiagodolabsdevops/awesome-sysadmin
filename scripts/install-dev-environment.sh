@@ -63,6 +63,7 @@ cli_tools=(
     virt-viewer
     oh-my-posh
     k9s
+    molten-vk
 )
 
 echo "Installing command-line tools..."
