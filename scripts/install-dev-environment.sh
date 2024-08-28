@@ -30,13 +30,15 @@ brew tap jeffreywildman/homebrew-virt-manager
 
 # Install cask applications
 cask_apps=(
-    microsoft-remote-desktop
     balenaetcher
-    ngrok
     docker
-    visual-studio-code
-    obs
     logitech-options
+    microsoft-remote-desktop
+    mongodb-compass 
+    ngrok
+    obs
+    rectangle
+    visual-studio-code
     whisky
     zoom
 )
@@ -52,18 +54,19 @@ done
 
 # Install command-line tools
 cli_tools=(
-    helm
-    kubernetes-cli
-    tree
-    htop
-    sops
     awscli
+    duf
+    helm
+    htop
+    k9s
+    kubernetes-cli
+    molten-vk
+    oh-my-posh
     qemu
+    tree
+    sops
     virt-manager
     virt-viewer
-    oh-my-posh
-    k9s
-    molten-vk
 )
 
 echo "Installing command-line tools..."
