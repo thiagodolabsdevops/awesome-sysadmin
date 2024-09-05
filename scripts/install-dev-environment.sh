@@ -31,6 +31,7 @@ brew tap jeffreywildman/homebrew-virt-manager
 # Install cask applications
 cask_apps=(
     balenaetcher
+    cursor
     docker
     logitech-options
     microsoft-remote-desktop
@@ -38,7 +39,6 @@ cask_apps=(
     ngrok
     obs
     rectangle
-    visual-studio-code
     whisky
     zoom
 )
@@ -81,7 +81,7 @@ done
 echo "Development tools installation complete!"
 
 # Check if VSCode command is available
-if command -v code &>/dev/null; then
+if command -v cursor &>/dev/null; then
     # List of extensions to install
     extensions=(
         "Gydunhn.vsc-essentials"
