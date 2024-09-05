@@ -80,7 +80,7 @@ done
 
 echo "Development tools installation complete!"
 
-# Check if VSCode command is available
+# Check if Cursor command is available
 if command -v cursor &>/dev/null; then
     # List of extensions to install
     extensions=(
@@ -90,13 +90,13 @@ if command -v cursor &>/dev/null; then
         "hashicorp.terraform"
     )
 
-    echo "Installing VSCode extensions..."
+    echo "Installing Cursor extensions..."
     for extension in "${extensions[@]}"; do
         echo "Installing $extension..."
-        code --install-extension "$extension"
+        cursor --install-extension "$extension"
     done
 
-    echo "VSCode extensions have been installed successfully!"
+    echo "Cursor extensions have been installed successfully!"
 else
-    echo "VSCode is not installed. Skipping extensions installation."
+    echo "Cursor is not installed. Skipping extensions installation."
 fi
