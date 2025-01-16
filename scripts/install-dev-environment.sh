@@ -33,11 +33,13 @@ cask_apps=(
     balenaetcher
     cursor
     docker
+    insomnia
     logitech-options
     microsoft-remote-desktop
     mongodb-compass 
     ngrok
     obs
+    postman
     rectangle
     whisky
     zoom
